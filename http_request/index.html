@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+  <button id="getWeather">获取天气</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+     $('#getWeather').click(function() {
+        $.ajax({
+          url: 'http://saweather.market.alicloudapi.com/spot-to-weather',
+          headers: {
+            "Authorization": "APPCODE 7300b3927fdb407ab4af4761b27912a8"
+          },
+          data: {
+            "area": "泰山",
+            "need3HourForcast": "0",
+            "needAlarm": "0",
+            "needHourData": "0",
+	          "needIndex": "0",
+	          "needMoreDay": "0"
+          },
+          success: function(res) {
+            console.log(res);
+          },
+          dataType: 'json'
+        });
+      });
+    });
+  </script>
+</body>
+</html>

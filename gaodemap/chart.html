@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./echarts.js"></script>
+  <script src="./jquery-3.3.1.min.js"></script>
+  <script src="./data.js"></script>
+</head>
+<body>
+  <div id="main" style="height:800px;"></div>
+  <script>
+        var myChart = echarts.init(document.getElementById('main'));
+        myChart.showLoading();
+
+// $.getJSON('data.json', function (json) {
+    
+//     }, true);
+// });
+myChart.hideLoading();
+    myChart.setOption(option = {
+        title: {
+            text: 'NPM Dependencies'
+        },
+        animationDurationUpdate: 1500,
+        animationEasingUpdate: 'quinticInOut',
+        label: {
+          show: true
+        },
+        series : [
+            {
+                type: 'graph',
+                layout: 'none',
+                // progressiveThreshold: 700,
+                data: json.nodes.map(function (node) {
+                    return {
+                        x: node.x,
+                        y: node.y,
+                        id: node.id,
+                        name: node.label,
+                        symbolSize: node.size,
+                        itemStyle: {
+                            normal: {
+                                color: node.color
+                            }
+                        }
+                    };
+                }),
+                edges: json.edges.map(function (edge) {
+                    return {
+                        source: edge.sourceID,
+                        target: edge.targetID
+                    };
+                }),
+                label: {
+                    emphasis: {
+                        position: 'right',
+                        show: true
+                    }
+                },
+                roam: true,
+                focusNodeAdjacency: true,
+                lineStyle: {
+                    normal: {
+                        width: 0.5,
+                        curveness: 0.3,
+                        opacity: 0.7
+                    }
+                }
+            }
+        ]
+          });
+</script>
+</body>
+</html>

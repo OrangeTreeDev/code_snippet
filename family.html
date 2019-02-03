@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SCB Family Party</title>
+    <link rel="icon" href="./static/icon.ico" type="image/x-icon">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        .family {
+            width: 100%;
+            height: 100%;
+            background-image: url('./static/home.jpg');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .family__media {
+            position: absolute;
+            /* left: 50%; */
+            left: 37.34%;
+            top: 30.67%;
+            /* top: 50%; */
+            /* width: 550px; */
+            width: 28.016%;
+            height: 23.78%;
+            font-size: 0;
+            overflow: hidden;
+            /* transform: translate(-45%, -60%);
+            -webkit-transform: translate(-45%, -60%);
+            -moz-transform: translate(-45%, -60%);
+            -ms-transform: translate(-45%, -60%); */
+        }
+        .family__video--on {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+        .family__video--off {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #070707;
+        }
+        .family__car{
+            display: none;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
+            -webkit-transform: translate(-50%);
+            z-index: 1;
+        }
+
+        .family__car--off {
+            bottom: 45.33%;
+            width: 20%;
+        }
+        .family__car--moving {
+            animation: moving;
+            -webkit-animation: moving;
+            animation-duration: 2s;
+            -webkit-animation-duration: 2s;
+            animation-fill-mode: forwards;
+            -webkit-animation-fill-mode: forwards;
+        }
+
+        @keyframes moving {
+            0% {
+                opacity: 0.5;
+            }
+            100% {
+                width: 80%;
+                opacity: 1;
+                bottom: 0;
+            }
+        }
+
+        .family__car--on {
+            bottom: 0;
+            width: 80%;
+            opacity: 0;
+        }
+
+        .family__car--flash {
+            animation: flash;
+            -webkit-animation: flash;
+            animation-duration: 2s;
+            -webkit-animation-duration: 2s;
+            animation-iteration-count: 1;
+            -webkit-animation-iteration-count: 1;
+            animation-direction:reverse;
+            -webkit-animation-direction:reverse;
+        }
+
+        @keyframes flash {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .modal-mask {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            /* opacity: 0.3; */
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-mask--shaddow {
+            animation: shaddow;
+            -webkit-animation: shaddow;
+            /* animation-delay: 0.5s;
+            -webkit-animation-delay: 0.5s; */
+            animation-duration: 2s;
+            -webkit-animation-duration: 2s;
+            animation-fill-mode: both;
+            -webkit-animation-fill-mode: both;
+        }
+
+        @keyframes shaddow {
+            0% {
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="family">
+        <div class="family__media">
+            <video class="family__video--on" src="./static/game.mp4" loop="loop" autoplay></video>
+            <div class="family__video--off"></div>
+        </div>
+        <div>
+            <img class="family__car family__car--off" src="./static/tiguanl_off.png" alt="">
+            <img class="family__car family__car--on" src="./static/tiguanl_on.png" alt="">
+        </div>
+    </div>
+    <div class="modal-mask"></div>
+</body>
+<script>
+    var familyVideoOff = document.getElementsByClassName('family__video--off')[0];
+    var familyCarOff = document.getElementsByClassName('family__car--off')[0];
+    var familyCarOn = document.getElementsByClassName('family__car--on')[0];
+    var modalMask = document.getElementsByClassName('modal-mask')[0];
+    // 监听enter键，启动汽车
+    document.addEventListener('keydown', function(e) {
+        // 按下enter键
+        if (e.keyCode === 13) {
+            familyVideoOff.style.display = 'block';
+            familyCarOff.style.display = 'block';
+            familyCarOff.className = familyCarOff.className + ' family__car--moving';
+            // setTimeout(() => {
+            //     modalMask.style.display = 'block';
+            // }, 1000);
+            modalMask.style.display = 'block';
+            modalMask.className = modalMask.className + ' modal-mask--shaddow';
+        }
+        if (e.keyCode === 82) {
+            location.reload(true);
+        }
+    });
+
+    // 监听动画结束
+    var animationEndHandler = function(e) {
+        if (e.animationName === 'moving') {
+            familyCarOn.style.display = 'block';
+            familyCarOn.className = familyCarOn.className + ' family__car--flash';
+        }
+        // if (e.animationName === 'moving') {
+        //     familyCarOn.style.display = 'block';
+        //     familyCarOn.className = familyCarOn.className + ' family__car--flash';
+        // }
+    }
+    document.addEventListener('webkitAnimationEnd', animationEndHandler);
+    document.addEventListener('animationEnd', animationEndHandler);
+</script>
+</html>

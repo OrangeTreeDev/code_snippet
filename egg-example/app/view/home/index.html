@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>axios</title>
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <script src="/public/js/xhr.js"></script>
+  </head>
+  <body onload="load()">
+    <button type="button" id="get" name="button">http request</button>
+  </body>
+  <script type="text/javascript">
+    // 假设http响应体格式为 {code: '', description: '', data: {}}
+    axios.interceptors.response.push(function (response) {
+      return response.data;
+    }, function (error) {
+      if (error.response && error.response.status === 401) {
+        // 跳转登陆页
+      } else if (error.response) {
+        // 非2xx响应码
+        alert(error.response.data.description);
+      } else {
+        // 请求超时，请求错误等情况，没有响应结果
+        alert(error.message);
+      }
+      // 一定要返回一个rejected状态的promise，否则then返回的是一个fullfill的promise，传递的值是undefined
+      return Promise.reject(error);
+    });
+    function load() {
+      const btn = document.getElementById('get');
+      const params = new URLSearchParams();
+      params.append('name', 'huberysun');
+      btn.addEventListener('click', () => {
+        axios({
+          method: 'post',
+          data: params,
+          url: 'http://127.0.0.1:7001/echo',
+        }).then(res => {
+          alert('success: ' + res);
+        });
+      });
+    }
+  </script>
+</html>

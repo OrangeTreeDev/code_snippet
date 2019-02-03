@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #outer {
+            position: relative;
+            width: 400px;
+            height: 200px;
+            overflow-x: hidden;
+        }
+        #inner {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 600px;
+            font-size: 0px;
+        }
+        .grid {
+            display: inline-block;
+            height: 200px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="outer">
+        <div id="inner">
+            <div class="grid" style="background-color: red"></div>
+            <div class="grid" style="background-color: green"></div>            
+        </div>
+    </div>
+</body>
+<script>
+    var outer = document.getElementById('outer');
+    var inner = document.getElementById('inner');
+    var initialWidth = inner.offsetWidth;
+    var space = 2;
+    function move () {
+        if (inner.offsetLeft <= -initialWidth) {
+            inner.style.left = 0 + 'px';
+        } else {
+            inner.style.left = (inner.offsetLeft - space) + 'px';
+        }
+    }
+    window.onload = function () {
+        inner.style.width = inner.offsetWidth * 2 + 'px';
+        inner.innerHTML += inner.innerHTML;
+        setInterval(move, 100);
+    };
+</script>
+</html>

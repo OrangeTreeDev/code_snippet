@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+    <script>
+      var observer = new PerformanceObserver((list) => {
+        for (let entry of list.getEntries()) {
+          console.log(entry);
+        }
+      });
+      observer.observe({ entryTypes: ['longtask'] });
+    </script>
+</head>
+<body>
+  <button id="subscribe">subscribe</button>
+  <script>
+    document.getElementById('subscribe').addEventListener('click', function(e) {
+      let latency = performance.now() - e.timeStamp;
+      console.log('click response latency', latency);
+    });
+
+    function longTask(max) {
+      console.log('start', performance.now());
+      let i = 0;
+      while(i < max) {
+        i++;
+        console.log('longTask', i);
+      }
+      console.log('end', performance.now());
+    }
+    setTimeout(() => {
+      longTask(11000);
+    } , 0);
+  </script>
+</body>
+</html>

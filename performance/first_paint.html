@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script>
+    const observer = new PerformanceObserver((list) => {
+      for (let entry of list.getEntries()) {
+        console.log(new Date(entry.startTime + entry.duration));
+      }
+    });
+    observer.observe({
+      entryTypes: ['paint']
+    });
+
+    // function longTask(max) {
+    //   const startTime = performance.now();
+    //   let i = 0;
+    //   while(i < max) {
+    //     i++;
+    //   }
+    //   const duration = performance.now() - startTime;
+    //   console.log('longTask', duration);
+    // }
+    // longTask(10000);
+  </script>
+</head>
+<body>
+  <div id="test"></div>
+  <script>
+    document.getElementById('test').teDOMContentLoadedxtContent = 'test';
+    document.addEventListener('', function(e) {
+      console.log(e);
+    });
+  </script>
+</body>
+</html>

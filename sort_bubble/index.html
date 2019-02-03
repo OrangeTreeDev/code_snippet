@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /**
+     * 1.比较相邻的元素，如果第一个元素大于第二个元素，则交换位置；
+     * 2.从第一对开始到最后一对结束，重复执行以上对比的操作，操作完成之后，最后一个元素就是最大的元素；
+     * 3.重复对每次越来越少的元素执行前两步操作，依次得到最大的元素。
+    */
+    function bubbleSort(arr) {
+      for (let i = 0, len = arr.length; i < len; i++) {
+        for (let j = 0; j < len - i - 1; j++) {
+          if (arr[j] > arr[j+1]) {
+            let temp = arr[j];
+            arr[j] = arr[j+1];
+            arr[j+1] = temp;
+          }
+        }
+      }
+      return arr;
+    }
+
+    const arrSorted = bubbleSort([3, 52, 1, 32, 12, 134]);
+  </script>
+</body>
+</html>

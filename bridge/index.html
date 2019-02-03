@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- 引入bridge文件 -->
+  <script src="./jsbridge.js"></script>
+</head>
+<body>
+  <button id="getUserBtn">获取用户信息</button>
+  <button id="returnFromNativeBtn">native返回结果</button>
+</body>
+<script>
+  var getUserBtn = document.getElementById('getUserBtn');
+  getUserBtn.addEventListener('click', function(e) {
+    window.webViewJavascriptBridge.callHandler('getUser', {
+      name: 'sun'
+    }, function(err, data) {
+      if (err) {
+        // 发生错误
+        console.log(err);
+        return;
+      }
+      // 成功返回结果
+      console.log(data);
+    });
+  });
+
+  window.navigator.userAgent = 'SVW_Android';
+
+  webViewJavascriptBridge.init({
+    key: 'vv'
+  });
+
+  // webViewJavascriptBridge.callHandler('getLocation', function(error, data) {
+  //   if (error) {
+  //     // 异常情况，业务代码
+  //     console.log(error);
+  //     return;
+  //   }
+  //
+  //   // data包含两个键值, longtitude和lantitude
+  //   console.log(data.longtitude, data.lantitude);
+  // });
+  webViewJavascriptBridge.callHandler('getLocation', {}, function() {});
+
+  var message = {
+    callbackId: 'cb_1_21323',
+    error: '',
+    data: {
+      longtitude: 123,
+      lantitude: 45
+    }
+  }
+  var messageStr = JSON.stringify();
+  webViewJavascriptBridge.dispatchMessageFromNative('{"callbackId":"cb_1_123","error":"","data":{"longtitude":"12","lantitude":"122"}}');
+</script>
+</html>

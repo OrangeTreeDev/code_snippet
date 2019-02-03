@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body onload="initPerformance()">
+    <script type="text/javascript">
+      function loadResource() {
+        var img = new Image();
+        img.onload = resourceTiming;
+        img.src = 'https://www.w3.org/Icons/w3c_main.png';
+      }
+
+      function resourceTiming () {
+        var resourceTimings = window.performance.getEntriesByType('resource');
+        for(var i = 0; i < resourceTimings.length; i++) {
+          var resource = resourceTimings[i];
+          if (resource.initiatorType === 'img') {
+            console.log('End to end resource fetch: ', resource.responseEnd - resource.startTime );
+          }
+        }
+      }
+
+      function initPerformance() {
+        performance.mark('startTask1');
+        doTask1();
+        performance.mark('endTask1');
+
+        measurePerformance();
+      }
+
+      function doTask1() {
+        for(var i = 0; i < 10000; i++) {
+        }
+      }
+
+      function measurePerformance() {
+        // var markPerformances = performance.getEntriesByType('mark');
+        // for (var i = 0; i < markPerformances.length; i++) {
+        //   console.log('name: ' + markPerformances[i].name);
+        //   console.log('type: ' + markPerformances[i].entryType);
+        //   console.log('startTime: ' + markPerformances[i].startTime);
+        //   console.log('duration: ' + markPerformances[i].duration);
+        // }
+
+        console.log(window.performance.measure('measureTask1','startTask1', 'endTask1'));
+      }
+
+    </script>
+  </body>
+</html>

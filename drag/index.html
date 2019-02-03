@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>dragable layout</title>
+  <style>
+    html, body, ul, li {
+      padding: 0;
+      margin: 0;
+    }
+    ul, li {
+      list-style: none;
+    }
+  </style>
+  <style>
+    .component {
+      position: relative;
+      vertical-align: top;
+      display: inline-block;
+    }
+    .dragBar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 15px;
+      height: 15px;
+    }
+    .closeBtn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 15px;
+      height: 15px;
+    }
+
+    #trashBtn {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: 20px;
+      height: 20px;
+    }
+    
+    #component-list {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: 100px;
+      height: 150px;
+      opacity: 0;
+      border: 1px solid lightgray;
+      border-radius: 10px;
+      transition-property: opacity;
+      transition-delay: 0ms;
+      transition-duration: 200ms;
+      transition-timing-function: ease-in-out;
+    }
+
+    .item-check {
+      padding: 5px;
+    }
+
+    #one {
+      height: 300px;
+      width: 100%;
+      background-color: lightblue;
+    }
+
+    #two {
+      height: 300px;
+      width: 100%;
+      background-color: lightpink;
+    }
+    #three {
+      height: 300px;
+      width: 100%;
+      background-color: lightgreen;
+    }
+  </style>
+</head>
+<body>
+  <div id="one" class="component">
+    <div class="toolBar">
+      <div id="one-bar" class="dragBar" draggable="true"></div>
+      <div class="closeBtn"></div>
+    </div>
+  </div>
+  <div id="two" class="component">
+    <div class="toolBar">
+      <div id="two-bar" class="dragBar" draggable="true"></div>
+      <div class="closeBtn"></div>
+    </div>
+  </div>
+  <div id="three" class="component">
+    <div class="toolBar">
+      <div id="three-bar" class="dragBar" draggable="true"></div>
+      <div class="closeBtn"></div>
+    </div>
+  </div>
+
+  <div id="config-center">
+    <div id="trashBtn"></div>
+    <ul id="component-list">
+    </ul>
+  </div>
+  
+  <script>
+    var touchOffset = 15;
+
+    /********************************/
+    /************拖拽功能*************/
+    /************拖拽元素顶部*************/
+
+    var draggable = false;
+    document.addEventListener('dragstart', function(event) {
+      // dragBar元素才可以拉伸
+      var target = event.target;
+      var isDraggable = target.className.split(' ').indexOf('dragBar') > -1
+      if(!isDraggable) return;
+      event.dataTransfer.setData('Text', event.target.id);
+      draggable = true;
+    });
+
+    // 默认地，无法将数据/元素放置到其他元素中
+    document.addEventListener("dragover", function(event) {
+      if (!draggable) return;
+
+      event.preventDefault();
+    });
+
+    document.addEventListener("drop", function(event) {
+      if (!draggable) return;
+
+      event.preventDefault();
+      var dragedEleId = event.dataTransfer.getData('Text');
+      var dragedEle = document.getElementById(dragedEleId);
+      // 目标元素是component
+      var target = event.target;
+      var isComponent = target.className.split(' ').indexOf('component') > -1;
+      if(isComponent) {
+        target.parentNode.insertBefore(dragedEle.parentNode.parentNode, target);
+      }
+    });
+
+    document.addEventListener('dragend', function() {
+      draggable = false;
+    });
+
+    /********************************/
+    /************拉伸功能*************/
+    /************拉伸元素右下角*************/
+
+    var currentStretchEle = null;
+    var pageX, pageY;
+    var mousemoveHandle = function(e) {
+      var moveX = e.pageX - pageX;
+      var moveY = e.pageY - pageY;
+      currentStretchEle.style.width = currentStretchEle.offsetWidth + moveX + 'px';
+      currentStretchEle.style.height = currentStretchEle.offsetHeight + moveY + 'px';
+      pageX = e.pageX;
+      pageY = e.pageY;
+    };
+    document.addEventListener('mousedown', function(e) {
+      // component元素才可以拉伸
+      currentStretchEle = e.target;
+      var isComponent = currentStretchEle.className.split(' ').indexOf('component') > -1
+      if(!isComponent) return;
+      
+      // 右下角 15px 范围之内，为有效的拉伸触点
+      var rightCornerX = currentStretchEle.offsetWidth - e.offsetX;
+      var rightCornerY = currentStretchEle.offsetHeight - e.offsetY; 
+
+      if (rightCornerX < touchOffset && rightCornerY < touchOffset) {
+        currentStretchEle.style.cursor = 'se-resize';
+        pageX = currentStretchEle.pageX;
+        pageY = currentStretchEle.pageY;
+
+        currentStretchEle.addEventListener('mousemove', mousemoveHandle);
+      }
+    });
+
+    document.addEventListener('mouseup', function(e) {
+      if (currentStretchEle) {
+        currentStretchEle.removeEventListener('mousemove', mousemoveHandle);
+        currentStretchEle.style.cursor = 'default';
+        currentStretchEle = null;
+        moveable = false;
+        pageX = 0;
+        pageY = 0;
+      }
+    });
+    
+    /********************************/
+    /************隐藏功能*************/
+    /************双击元素右上角*************/
+    var componentListElm = document.getElementById('component-list');
+    document.addEventListener('dblclick', function(event) {
+      // component元素才可以拉伸
+      target = event.target;
+      var isCloseBtn = target.className.split(' ').indexOf('closeBtn') > -1
+      if(!isCloseBtn) return;
+
+      // 隐藏元素component
+      target.parentNode.parentNode.style.display = 'none';
+      var listItemElm = document.createElement('li');
+      var checkInputElm = document.createElement('input');
+      checkInputElm.setAttribute('type', 'checkbox');
+      checkInputElm.setAttribute('class', 'item-check');
+      listItemElm.appendChild(checkInputElm);
+      var txtElm = document.createTextNode(target.parentNode.parentNode.id);
+      listItemElm.appendChild(txtElm);
+      componentListElm.appendChild(listItemElm);
+    });
+
+    /************************************/
+    /************恢复显示功能*************/
+    /************在页面左下角停留显示悬浮列表*************/
+    var trashBtn = document.getElementById('trashBtn');
+    componentListElm.addEventListener('mouseenter', function(e) {
+      e.target.style.opacity = 1;
+    });
+    componentListElm.addEventListener('mouseleave', function(e) {
+      e.target.style.opacity = 0;
+    });
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      var isCheckbox = target.className.split(' ').indexOf('item-check') > -1;
+      if(!isCheckbox) return;
+      var componentId = target.nextSibling.nodeValue;
+      document.getElementById(componentId).style.display = 'inline-block';
+      componentListElm.removeChild(target.parentNode);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+      #mask {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+      #mask img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+</head>
+<body>
+    <div id="mask">
+        <img src="./loading.gif">
+      </div>
+  <input type="file" name="选择文件" id="fileChoose">
+  <textarea id="output" cols="30" rows="10" style="width: 100%;"></textarea>
+  <br>
+  <script src="./xlsx.full.min.js"></script>
+  <script>
+    var fileChoose = document.getElementById('fileChoose');
+    var textarea = document.getElementById('output');
+    var maskLayer = document.getElementById('mask');
+    var resultData = [];
+    var requestCount = 0;
+    var worksheet;
+    var sheetJson;
+    fileChoose.addEventListener('change', function(e) {
+      if (fileChoose.files.length <= 0) {
+        return;
+      }
+      maskLayer.style.display = 'block';
+      var fileReader = new FileReader();
+      fileReader.onload = function(e) {
+        try {
+          var workbook = XLSX.read(e.target.result , {
+            type: 'binary'
+          });
+          for(var sheetname in workbook.Sheets) {
+            if(workbook.Sheets.hasOwnProperty(sheetname)) {
+              worksheet = workbook.Sheets[sheetname];
+              sheetJson = XLSX.utils.sheet_to_json(worksheet);
+            }
+          }
+          var fetchData = function (adr, idx) {
+            var time = idx * 100;
+            setTimeout(function() {
+              geocode(adr, resultData);
+            }, time);
+          }
+          for (var i = 0; i < sheetJson.length; i++) {
+            fetchData(sheetJson[i]['地址'], i);
+          }
+          // Array.prototype.forEach.call(sheetJson, function(item) {
+          //   if (item.hasOwnProperty('地址')) {
+          //     setTimeout(function() {
+          //       geocode(item['地址'], resultData);
+          //       console.log((new Date()).toLocaleTimeString());
+          //     }, 1000);
+          //   }
+          // });
+        } catch(ex) {
+          alert(ex);
+        }
+      }
+      fileReader.readAsBinaryString(fileChoose.files[0]);
+    });
+
+    function geocode(address) {
+      var xmlHttp = new XMLHttpRequest();
+      var url = 'http://restapi.amap.com/v3/geocode/geo?key=c15e48a0837f33cf1ec7c2779e5b3a1d&address=' + address;
+      xmlHttp.open('GET', url, true);
+      xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+          if (xmlHttp.status === 200) {
+            requestCount++;
+            var res = JSON.parse(xmlHttp.responseText);
+            // console.log(res);
+            if (res.geocodes && res.geocodes[0] && res.geocodes[0]['formatted_address']) {
+              resultData.push({
+                address: res.geocodes[0]['formatted_address'],
+                location: res.geocodes[0]['location']
+              });
+            } else {
+              resultData.push({
+                address: address,
+                location: ''
+              });
+            }
+            // 如果所有的请求完成，显示到textarea中
+            if (requestCount === sheetJson.length) {
+              maskLayer.style.display = 'none';
+              textarea.value = JSON.stringify(resultData);
+            }
+          } else {
+            alert('服务器解析异常');
+          }
+        }
+      };
+      xmlHttp.send(null);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>css perspective</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+  <script src="main.js"></script>
+  <style>
+    #cube-container {
+      position: relative;
+      height: 500px;
+      transform-style: preserve-3d;
+      transform: rotateY(45deg);
+      -webkit-ransform: rotateY(45deg);
+    }
+
+    .cube {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+    }
+    .cube-front {
+      transform: translateZ(100px);
+      -webkit-transform: translateZ(100px);
+      background-color: rebeccapurple;
+    }
+    .cube-left {
+      transform: rotateY(90deg) translateX(-100px);
+      -webkit-transform: rotateY(90px) translateX(-100px);
+      background-color: red;
+    }
+    .cube-right {
+      transform: rotateY(90deg) translateX(100px);
+      -webkit-transform: rotateY(90deg) translateX(100px);
+      background-color: blue;
+    }
+    .cube-back {
+      transform: translateZ(-100px);
+      -webkit-transform: translateZ(-100px);
+      background-color: green;
+    }
+    .cube-top {
+      transform: rotateX(90deg) translateY(-100px);
+      -webkit-transform: rotateX(90deg) translateY(-100px);
+      background-color: pink;
+    }
+    .cube-bottom {
+      transform: rotateX(90deg) translateY(100px);
+      -webkit-transform: rotateX(90deg) translateY(100px);
+      background-color: orange;
+    }
+
+    /* perspective 设置透视点 */
+
+    .container {
+      position: absolute;
+      transform-style: preserve-3d;
+      perspective: 200px;
+      height: 300px;
+      width: 800px;
+      padding: 100px;
+      box-sizing: border-box;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: lightcoral;
+    }
+    .block {
+      position: relative;
+      margin: auto;
+      transform: translateZ(100px);
+      height: 100px;
+      width: 100px;
+      background-color: lightgrey;
+    }
+  </style>
+</head>
+<body>
+  <div id="cube-container">
+    <div class="cube cube-front"></div>
+    <div class="cube cube-left"></div>
+    <div class="cube cube-right"></div>
+    <div class="cube cube-back"></div>
+    <div class="cube cube-top"></div>
+    <div class="cube cube-bottom"></div>
+  </div>
+
+  <div>
+    <p>perspective实验</p>
+    <input id="rangeBar" type="range" value="0">
+    <div class="container">
+      <div class="block"></div>
+    </div>
+  </div>
+  <script>
+    var rangeBar = document.getElementById('rangeBar');
+    rangeBar.addEventListener('change', function(e){
+      console.log(e.target.value);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /**
+     * 从数组中选择一个元素作为基准，
+     * 从右边开始，寻找小于基准的元素，然后交换；从右边开始，将所有大于基准的元素移动到右边
+     * 对基准的左边数组和右边数组重复前两步操作，直到数组的元素只剩一个为止。
+     */
+    function quickSort(arr, head, tail) {
+      if (arr.length <= 1 ) return;
+      const key = arr[0];
+      let left = head;
+      let right = tail;
+      while(right > left) {
+        while(right > left && arr[right] > key) {
+          right -= 1;
+        }
+        if (right > left) {
+          let temp = arr[left];
+          arr[left] = arr[right];
+          arr[right] = temp;
+        }
+        while(right > left && arr[left] < key) {
+          left += 1;
+        }
+        if (right > left) {
+          let temp = arr[left];
+          arr[left] = arr[right];
+          arr[right] = temp;
+        }
+      }
+      quickSort(arr, );
+    }
+    quickSort([10, 50, 30, 12, 5], 0, 4);
+  </script>
+</body>
+</html>

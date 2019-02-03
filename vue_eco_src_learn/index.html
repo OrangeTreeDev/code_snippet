@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>vue_web_app</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="btn1">按钮1</div>
+    <div id="btn2">按钮2</div>
+    <a href="http://www.baidu.com">链接</a>
+    <!-- built files will be auto injected -->
+  </body>
+  <script>
+    document.getElementById('btn1').addEventListener('click', function(e) {
+      window.history.pushState({name: 1}, 'newrecord1', 'newrecord1.html');
+    });
+    document.getElementById('btn2').addEventListener('click', function(e) {
+      window.history.pushState({name: 2}, 'newrecord2', 'newrecord2.html');
+    });
+    window.onpopstate = function(e) {
+      console.log('popstate', e.state);
+    };
+  </script>
+</html>

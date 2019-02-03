@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API/Using_channel_messaging">Using channel message</a>
+  <p></p>
+  <form action="">
+    <input type="text">
+    <input type="button" value="发送">
+  </form>
+  <iframe src="./embedded.html" frameborder="0"></iframe>
+  <script>
+    var iframe = document.querySelector('iframe');
+    var input = document.querySelector("input[type='text']");
+    var button = document.querySelector('input[type="button"]');
+    var p = document.querySelector('p');
+    iframe.onload = function() {
+      button.addEventListener('click', function() {
+        iframe.contentWindow.postMessage(input.value, '*');
+      });
+    };
+    window.onmessage = function(event) {
+      p.innerHTML = event.data;
+    };
+  </script>
+</body>
+</html>

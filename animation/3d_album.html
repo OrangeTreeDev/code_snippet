@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #stage {
+      margin-top: 300px;
+      height: 500px;
+      perspective: 800px;
+      background-color: gray;
+    }
+    #container {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 128px;
+      height: 100px;
+      transform: translate(-50%, -50%);
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease-in-out;
+    }
+    .photo {
+      position: absolute;
+      width: 128px;
+      height: 100px;
+    }
+    .photo:nth-child(1) {
+      transform: rotateY(0deg) translateZ(195.839px);
+    }
+    .photo:nth-child(2) {
+      transform: rotateY(40deg) translateZ(195.839px);
+    }
+    .photo:nth-child(3) {
+      transform: rotateY(80deg) translateZ(195.839px);
+    }
+    .photo:nth-child(4) {
+      transform: rotateY(120deg) translateZ(195.839px);
+    }
+    .photo:nth-child(5) {
+      transform: rotateY(160deg) translateZ(195.839px);
+    }
+    .photo:nth-child(6) {
+      transform: rotateY(200deg) translateZ(195.839px);
+    }
+    .photo:nth-child(7) {
+      transform: rotateY(240deg) translateZ(195.839px);
+    }
+    .photo:nth-child(8) {
+      transform: rotateY(280deg) translateZ(195.839px);
+    }
+    .photo:nth-child(9) {
+      transform: rotateY(320deg) translateZ(195.839px);
+    }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <div id="container">
+      <img class="photo" src="/static/1.jpg"/>
+      <img class="photo" src="/static/2.jpg"/>
+      <img class="photo" src="/static/3.jpg"/>
+      <img class="photo" src="/static/4.jpg"/>
+      <img class="photo" src="/static/5.jpg"/>
+      <img class="photo" src="/static/6.jpg"/>
+      <img class="photo" src="/static/7.jpg"/>
+      <img class="photo" src="/static/8.jpg"/>
+      <img class="photo" src="/static/9.jpg"/>
+    </div>
+  </div>
+</body>
+<script>
+  var stage = document.getElementById('stage');
+  var container = document.getElementById('container');
+  var originTransform = window.getComputedStyle(container).getPropertyValue('transform');
+  var count = 0;
+  stage.addEventListener('click', function(e) {
+    if (e.target.className === 'photo') {
+      count++;
+      container.style.transform = originTransform + ' rotateY(' + 40 * count + 'deg)';
+    }
+  });
+</script>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>responsive image</title>
+</head>
+<body>
+  <!-- 不同视图宽度，显示不同尺寸的图片 -->
+  <!-- <img srcset="elva-fairy-320w.jpg 320w,
+            elva-fairy-480w.jpg 480w,
+            elva-fairy-800w.jpg 800w"
+    sizes="(max-width: 320px) 320px,
+          (max-width: 480px) 440px,
+          800px"
+    src="elva-fairy-800w.jpg" alt="Elva dressed as a fairy"> -->
+
+  <!-- 图片尺寸固定，不同dpr，显示不同的图片 -->
+  <!-- <img
+    srcset="./elva-fairy-320w.jpg 1x,
+            ./elva-fairy-480w.jpg 2x,
+            ./elva-fairy-800w.jpg 3x"
+    src="./elva-fairy-800w.jpg"
+    alt="same size and different dpr"
+    width="320"> -->
+
+
+  <!-- 艺术裁剪 -->
+  <!-- 大于500px，显示完整的图片，小于500px，显示裁剪后的图片 -->
+  <picture>
+    <source media="(max-width: 500px)" srcset="elva-cut.png">
+    <source media="(min-width: 500px)" srcset="elva-800w.jpg">
+    <img src="elva-800w.jpg" alt="art resolution" style="width: 100%; padding: 20px;">
+  </picture>
+</body>
+</html>

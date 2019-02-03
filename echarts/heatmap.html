@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>heatmap demo</title>
+  <script src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+  <script src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+  <script src="/js/city.js"></script>
+  <!-- <script src="./js/china.js"></script> -->
+  <!-- <script src="./js/china_l.js"></script> -->
+  <style>
+    #app {
+      margin: 200px auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="width: 800px; height: 800px">
+  </div>
+  <script>
+    // 注册地图
+    // echarts.registerMap('china', chinaJson);
+    const onlineData = [
+      {
+        name: '合肥',
+        value: 100
+      },
+      {
+        name: '芜湖',
+        value: 300
+      },
+      {
+        name: '蚌埠',
+        value: 50
+      },
+      {
+        name: '阜阳',
+        value: 320
+      },
+      {
+        name: '马鞍山',
+        value: 138
+      },
+      {
+        name: '六安',
+        value: 409
+      },
+      {
+        name: '安庆',
+        value: 267
+      },
+      {
+        name: '池州',
+        value: 21
+      },
+      {
+        name: '武汉',
+        value: 454
+      },
+      {
+        name: '荆州',
+        value: 138
+      },
+      {
+        name: '孝感',
+        value: 214
+      },
+      {
+        name: '黄冈',
+        value: 23
+      },
+      {
+        name: '潜江',
+        value: 345
+      },
+    ];
+    function formatterScatterData(cityGeos, values) {
+      var res = [];
+      values.forEach(function(item) {
+        res.push({
+          name: item.name,
+          value: cityGeos[item.name].concat(item.value),
+        });
+      });
+      return res;
+    }
+    var app = echarts.init(document.getElementById('app'));
+    var options = {
+      geo: {
+        map: 'china',
+        label: {
+          emphasis: {
+            show: false,
+          }
+        },
+        itemStyle: {
+          normal: {
+            areaColor: '#17293E',
+            borderColor: '#4297C2',
+          },
+          emphasis: {
+            areaColor: '#17293E',
+            borderColor: '#4297C2',
+          }
+        },
+      },
+      visualMap: {
+        type: 'continuous',
+        seriesIndex: 0,
+        show: false,
+        min: 0,
+        max: 500,
+        inRange: {
+          color: ['rgba(0,179,234,0.4)','#00B3EA']
+        },
+        textStyle: {
+          color: '#fff'
+        }
+      },
+      series: [
+        {
+          name: 'onlineUser',
+          type: 'heatmap',
+          coordinateSystem: 'geo',
+          data: formatterScatterData(cityGeos, onlineData),
+        },
+        {
+          name: 'topSite',
+          type: 'effectScatter',
+          coordinateSystem: 'geo',
+          data: [
+            {
+              name: '合肥',
+              value: [117.282699, 31.866942, 100],
+            },
+            {
+              name: '武汉',
+              value: [114.3162, 30.581084, 200],
+            },
+            {
+              name: '上海',
+              value: [121.487899, 31.249162, 300],
+            }
+          ],
+          symbolSize: function (val) {
+            return 20;
+          },
+          itemStyle: {
+            normal: {
+              color: '#D499E5'
+            },
+            emphasis: {
+              color: '#D499E5'
+            }
+          }
+        }
+      ],
+       
+    };
+    app.setOption(options);
+  </script>
+</body>
+</html>

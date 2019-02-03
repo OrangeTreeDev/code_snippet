@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class="caculator">
+    <p class="status">not caculating
+    </p>
+  </div>
+  <script>
+    function longTask(max) {
+      let i = 0;
+      while(i < max) {
+        i++;
+        console.log('longTask', i);
+      }
+    }
+
+    function domOperation() {
+      document.querySelector('.status').innerHTML = 'start caculating';
+      setTimeout(() => {
+        longTask(1000);
+      }, 0);
+      document.querySelector('.status').innerHTML = 'end caculating';
+    }
+
+    domOperation();
+  </script>
+</body>
+</html>

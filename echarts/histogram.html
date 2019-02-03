@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/echarts/4.0.4/echarts.min.js"></script>
+</head>
+<body>
+  <div id="bar" style="width: 600px; height: 600px; margin: auto"></div>
+  <script>
+    var bar = echarts.init(document.getElementById('bar'));
+    var option = {
+      title: {
+        show: true,
+        text: 'RTM服务使用情况统计图',
+      },
+      tooltip: {
+        show: true,
+        trigger: 'axis',
+      },
+      xAxis: {
+        type : 'category',
+        data : ['未激活', 'RTM服务添加成功', 'RTM服务添加失败', '已激活'],
+        axisLabel: {
+          interval: 0,
+        }
+      },
+      yAxis: {
+        type : 'value'
+      },
+      series: [
+        {
+          name:'数量',
+          type:'bar',
+          label: {
+            show:  true,
+            position: 'top',
+            color: '#000',
+            formatter: function(item) {
+              return Math.round((item.data.value/item.data.amount) * 100000) /1000 + '%';
+            }
+          },
+          data: [
+            {
+              value: 98,
+              amount: 375,
+              itemStyle: {
+                color: '#F2F014'
+              }
+            },
+            {
+              value: 77,
+              amount: 375,
+              itemStyle: {
+                color: '#1491F2'
+              }
+            },
+            {
+              value: 101,
+              amount: 375,
+              itemStyle: {
+                color: '#EE2B16'
+              }
+            },
+            {
+              value: 99,
+              amount: 375,
+              itemStyle: {
+                color: '#0BDC43'
+              }
+            },
+          ]
+        }
+      ]
+    };
+
+    bar.setOption(option);
+  </script>
+</body>
+</html>

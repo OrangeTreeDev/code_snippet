@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+  <div id="app">
+    <p>Geolocation api</p>
+  </div>
+  <input id="changeBtn" type="button" value="remove">
+  <iframe src="http://www.baidu.com" frameborder="0" width="100%" height="300px"></iframe>
+  <script>
+    console.log('get current position');
+    navigator.geolocation.getCurrentPosition(function successCallback(position) {
+      console.log(position);
+    });
+    console.log('watch position change');
+
+    // debugger;
+    navigator.geolocation.watchPosition(function(position) {
+      console.log(position.coords.altitude);
+      console.log(position.coords.speed);
+    })
+
+    var appElem = document.getElementById('app');
+    document.getElementById('changeBtn').addEventListener('click', function(event) {
+      if(appElem.childNodes.length > 0) {
+        appElem.removeChild(appElem.childNodes[0]);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=\, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+  <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+<script type="text/x-template" id="counter">
+  <div>
+    <div>{{count}}</div>
+    <input type="button" value="+" @click="increase">
+    <input type="button" value="-" @click="decrease">
+  </div>
+</script>
+<script>
+  var store = new Vuex.Store({
+    state: {
+      count: 0,
+    },
+    mutations: {
+      increase: function(state) {
+        state.count++;
+      },
+      decrease: function(state) {
+        state.count--;
+      },
+    }
+  });
+  var vue = new Vue({
+    el: '#app',
+    template: '#counter',
+    computed: {
+      count: function () {
+        return store.state.count;
+      }
+    },
+    methods: {
+      increase: function(state) {
+        store.commit('increase');
+      },
+      decrease: function() {
+        store.commit('decrease');
+      },
+    }
+  });
+</script>
+</html>
