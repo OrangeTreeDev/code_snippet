@@ -1,3 +1,4 @@
+'use strict';
 (function(window) {
   /**
    * 浏览器端请求基于XMLHttpRequest
@@ -9,7 +10,7 @@
      * @param {*} message 
      */
     function createError(message, config, request, response) {
-      const err = new Error(message);
+      let err = new Error(message);
       err.config = config;
       err.request = request;
       if (response) {

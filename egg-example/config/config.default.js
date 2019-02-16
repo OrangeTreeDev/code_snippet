@@ -18,8 +18,13 @@ module.exports = appInfo => {
   config.security = {
     csrf: {
       enable: false
-    },
+    }
   };
+
+  config.cors = {
+    origin: '*',
+  };
+
   config.onerror = {
     all(err, ctx) {
       // console.log('all error handle');

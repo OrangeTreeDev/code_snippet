@@ -14,6 +14,11 @@ class HomeController extends Controller {
     this.ctx.status = 400;
     this.ctx.body = `hi, ${name}`;
   }
+
+  async list() {
+    this.ctx.status = 200;
+    this.ctx.body = ['sun', 'song', 'li'];
+  }
 }
 
 module.exports = HomeController;
