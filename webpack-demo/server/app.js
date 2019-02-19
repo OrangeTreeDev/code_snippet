@@ -1,5 +1,4 @@
 const Koa = require('koa');
-
 const app = new Koa();
 /**
  * Koa can take two different kinds of functions as middleware
