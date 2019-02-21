@@ -1,24 +1,26 @@
 <template>
-<div id="app">
-  <div class="hello">
-    {{ echo }}
+  <div class="example">
+    <p>{{ msg }}</p>
+    <Other></Other>
   </div>
-</div>
 </template>
 
 <script>
 export default {
-  name: 'Hello',
+  components: {
+    Other: () => import('./other.vue'),
+  },
   data() {
     return {
-      echo: 'Hello Vue',
+      msg: 'Hello world!',
     };
-  },  
+  },
 };
 </script>
 
-<style lang="css">
-.hello {
-  color: blue;
+<style lang="less" scoped>
+.example {
+  background: linear-gradient(to bottom, white, black);
+  color: red;
 }
 </style>
