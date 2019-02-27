@@ -1,9 +1,19 @@
+const path = require('path');
 const Koa = require('koa');
-const koaWebpack = require('koa-webpack');
-const webpackDevConfig = require('../build/webpack.dev.conf');
+const koaBody = require('koa-body');
+const entry = require('./middleware/entry.js');
+const webpackConfig= require('../build/webpack.dev.conf');
 
-const app = new Koa();
-const koaWebpackMiddle = await koaWebpack({ config: webpackDevConfig });
-app.use(koaWebpackMiddle);
+async function boot() {
+  const app = new Koa();
+  app.use(koaBody());
+  
+  const isStatic= process.env.NODE_ENV === 'production';
+  const staticRoot = path.resolve(__dirname, '../dist');
+  const entryMiddleware = await entry(isStatic, webpackConfig, staticRoot)
+  app.use(entryMiddleware);
+  
+  app.listen(3000, () => console.log('app is listening on http://127.0.0.1:3000'));
+}
 
-app.listen(3000, () => console.log('is listening on http://127.0.0.1:3000'));
+boot();

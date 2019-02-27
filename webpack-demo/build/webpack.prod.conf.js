@@ -12,11 +12,29 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
   // use built-in optimizations
   // enable DefinePlugin, TerserPlugin
   mode: 'production',
+  // debugging as well as running benchmark tests
+  devtool: 'source-map',
   optimization: {
-    // split runtime code into a separat
+    // split chunk
+    splitChunks: {
+      cacheGroups: {
+        // split duplicated dependencies into a new chunks
+        commons: {
+          chunks: 'all',
+          minChunks: 2
+        },
+        // split core module into a new chunks
+        vendors: {
+          test: /[\\/]node_modules[\\/](vue|vue-router|vuex|axios)/,
+          chunks: 'all'
+        }
+      }
+    },
     runtimeChunk: 'single',
+    // avoid duplicated dependencies and 
     // To minify the output
     minimizer: [
+      // drop dead code and minify js
       new TerserPlugin({
         cache: true,
         parallel: true,
@@ -36,7 +54,7 @@ const prodWebpackConfig = merge(baseWebpackConfig, {
      * then the CSS bundle is loaded in parallel to the JS bundle(inclue dynamic import bundle)
      */
     new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
+      filename: 'css/[name].[hash].css',
     }),
     // inject bundle into html file
     new HtmlWebpackPlugin({

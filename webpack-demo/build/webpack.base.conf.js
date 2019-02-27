@@ -5,9 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const isProd = process.env.NODE_ENV === 'production';
 module.exports = {
   context: path.resolve(__dirname, '../'), // absolute path for resolving entry and loaders cofig
-  entry: {
-    app: './client/app.js',
-  },
+  entry: ['./client/app.js'],
   resolve: {
     extensions: [ '.js', '.vue', '.json' ]
     // alias: {
@@ -17,7 +15,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: '[name].[contenthash].js'
+    filename: 'js/[name].[hash].js',
+    publicPath: '/'
   },
   module: {
     // asset management

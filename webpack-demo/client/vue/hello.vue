@@ -2,6 +2,7 @@
   <div class="example">
     <p>{{ msg }}</p>
     <Other></Other>
+    <div>koa-webpack</div>
   </div>
 </template>
 
